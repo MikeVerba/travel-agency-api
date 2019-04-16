@@ -29,7 +29,7 @@ public class CustomWebSecurityAdapter extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception{
         httpSecurity.authorizeRequests()
-                .antMatchers("securityNone").permitAll()
+                .antMatchers("/securityNone").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic()
