@@ -55,7 +55,7 @@ public class OfferServiceImpl implements OfferService {
     public List<OfferDto> getAllOffersQualifiedByConditions(OfferDto conditionsOfferDto) {
         return offerRepository.findAll()
                 .stream()
-                .filter(offer -> !offer.getOfferBooked())
+                .filter(offer -> !offer.getIsOfferBooked())
                 .map(offer -> {
                     OfferDto offerDto = offerMapper.offerToOfferDto(offer);
                     offerDto.setOfferUrl(createOfferUrl(offer.getId()));
@@ -126,7 +126,7 @@ public class OfferServiceImpl implements OfferService {
         return offerRepository.findById(id)
                 .map(offer -> {
                    if(offerDto.getDogAllowed() != null){
-                       offer.setDogAllowed(offerDto.getDogAllowed());
+                       offer.setIsDogAllowed(offerDto.getDogAllowed());
                    }
 
                    if(offerDto.getPricePerNight() != null){
@@ -140,7 +140,7 @@ public class OfferServiceImpl implements OfferService {
                         offer.setContinent(offerDto.getContinent());
                     }
                     if(offerDto.getOfferBooked() != null){
-                        offer.setOfferBooked(offerDto.getOfferBooked());
+                        offer.setIsOfferBooked(offerDto.getOfferBooked());
                     }
 
                     Offer savedOffer = offerRepository.save(offer);

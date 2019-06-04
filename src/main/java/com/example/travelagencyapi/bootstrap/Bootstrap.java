@@ -34,24 +34,24 @@ public class Bootstrap implements CommandLineRunner {
         offer1.setNumberOfNights(2);
         offer1.setPricePerNight(219.99F);
         offer1.setContinent(Continent.AF);
-        offer1.setDogAllowed(false);
-        offer1.setOfferBooked(false);
+        offer1.setIsDogAllowed(false);
+        offer1.setIsOfferBooked(false);
         offerRepository.save(offer1);
 
         Offer offer2 = new Offer();
         offer2.setNumberOfNights(4);
         offer2.setPricePerNight(300.99F);
         offer2.setContinent(Continent.EU);
-        offer2.setDogAllowed(true);
-        offer2.setOfferBooked(false);
+        offer2.setIsDogAllowed(true);
+        offer2.setIsOfferBooked(false);
         offerRepository.save(offer2);
 
         Offer offer3 = new Offer();
         offer3.setNumberOfNights(7);
         offer3.setPricePerNight(500.99F);
         offer3.setContinent(Continent.AS);
-        offer3.setDogAllowed(false);
-        offer3.setOfferBooked(false);
+        offer3.setIsDogAllowed(false);
+        offer3.setIsOfferBooked(false);
         offerRepository.save(offer3);
 
 
