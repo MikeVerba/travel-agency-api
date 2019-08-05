@@ -189,6 +189,7 @@ class OfferControllerTest {
     }
 
     @Test
+    @DisplayName("Testing delete offer")
     void deleteOffer() throws Exception {
 
         mockMvc.perform(delete("/api/v1/offers/"+offer.getId()))
