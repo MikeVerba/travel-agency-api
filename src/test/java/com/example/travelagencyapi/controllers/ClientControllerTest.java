@@ -3,6 +3,7 @@ package com.example.travelagencyapi.controllers;
 import com.example.travelagencyapi.api.models.ClientDto;
 import com.example.travelagencyapi.services.ClientServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.BDDMockito.*;
@@ -53,23 +55,35 @@ class ClientControllerTest {
     }
 
     @Test
+    @DisplayName("Testing getting all clients - no parameters")
     void getAllClients() throws Exception {
 
         given(clientService.getAllClients()).willReturn(clientDtoList);
 
-        mockMvc.perform(get("/api/v1/clients/all"))
+        mockMvc.perform(get("/api/v1/clients/all").accept(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$",hasSize(1)))
+                .andExpect(jsonPath("$[0].id",is(1)))
+                .andExpect(jsonPath("$[0].firstname",is("Jan")))
+                .andExpect(jsonPath("$[0].lastname",is("Pazyl")))
+                .andExpect(jsonPath("$[0].client_url",is("someurl")))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+
+        //when working against real database the order of clients can be different!
     }
 
     @Test
+    @DisplayName("Testing getting single client")
     void getClientById() throws Exception {
         given(clientService.getClientById(anyLong())).willReturn(clientDto);
 
-        mockMvc.perform(get("/api/v1/clients/1"))
+        mockMvc.perform(get("/api/v1/clients/" + clientDto.getId()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(jsonPath("$.id",is(1)));
+                .andExpect(jsonPath("$.id",is(1)))
+                .andExpect(jsonPath("$.lastname", is("Pazyl")))
+                .andExpect(jsonPath("$.firstname", is("Jan")));
+
     }
 
     @Test
