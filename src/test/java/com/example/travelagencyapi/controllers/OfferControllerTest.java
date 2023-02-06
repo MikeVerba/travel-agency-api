@@ -1,6 +1,5 @@
 package com.example.travelagencyapi.controllers;
 
-import com.example.travelagencyapi.api.models.ClientDto;
 import com.example.travelagencyapi.api.models.OfferDto;
 import com.example.travelagencyapi.domain.Client;
 import com.example.travelagencyapi.domain.Continent;
@@ -18,75 +17,43 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.hamcrest.core.Is.is;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
-import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(MockitoExtension.class)
 class OfferControllerTest {
-
     @Mock
     OfferServiceImpl offerService;
-
     @InjectMocks
     OfferController offerController;
-
     MockMvc mockMvc;
-
-    List<Offer> offerList;
-
-    List<OfferDto> offerDtoList;
-
+    List<Offer> offerList = new ArrayList<>();
+    List<OfferDto> offerDtoList = new ArrayList<>();
     Offer offer;
-
     OfferDto offerDto;
-
     Client client;
-
-    List<Client>clientList;
-
-    ClientDto clientDto;
-
-
 
     @BeforeEach
     void setUp() {
         mockMvc = MockMvcBuilders.standaloneSetup(offerController).build();
+        offer = createOffer();
+        client = createClient();
+        offerDto = createOfferDto();
+        offerDtoList.add(offerDto);
+    }
 
-        offerList = new ArrayList<>();
-
-        offerDtoList = new ArrayList<>();
-
-        offer = new Offer();
-        offer.setId(1L);
-        offer.setClient(client);
-        offer.setContinent(Continent.AF);
-        offer.setIsDogAllowed(true);
-        offer.setIsOfferBooked(false);
-        offer.setPricePerNight(12.99F);
-        offer.setNumberOfNights(4);
-
-
-        client = new Client();
-        client.setId(1L);
-        client.setFirstname("Jan");
-        client.setLastname("Pazyl");
-        client.setBookedOffers(offerList);
-
-
-        offerDto = new OfferDto();
+    private OfferDto createOfferDto() {
+        OfferDto offerDto = new OfferDto();
         offerDto.setId(1L);
         offerDto.setOfferUrl("someurl");
         offerDto.setClient(client);
@@ -94,10 +61,28 @@ class OfferControllerTest {
         offerDto.setNumberOfNights(4);
         offerDto.setPricePerNight(12.99F);
         offerDto.setDogAllowed(true);
+        return offerDto;
+    }
 
-        offerDtoList.add(offerDto);
+    private Client createClient() {
+        Client client = new Client();
+        client.setId(1L);
+        client.setFirstname("Jan");
+        client.setLastname("Pazyl");
+        client.setBookedOffers(offerList);
+        return client;
+    }
 
-
+    private Offer createOffer() {
+        Offer offer = new Offer();
+        offer.setId(1L);
+        offer.setClient(client);
+        offer.setContinent(Continent.AF);
+        offer.setIsDogAllowed(true);
+        offer.setIsOfferBooked(false);
+        offer.setPricePerNight(12.99F);
+        offer.setNumberOfNights(4);
+        return offer;
     }
 
     @Test
@@ -116,7 +101,6 @@ class OfferControllerTest {
                 .andExpect(jsonPath("$[0].client.firstname",is("Jan")))
                 .andExpect(jsonPath("$[0].client.lastname",is("Pazyl")))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
-
         //when working against real database the order of offers can be different!
     }
 
@@ -124,7 +108,6 @@ class OfferControllerTest {
     @DisplayName("Testing getting all Unbooked Offers")
     void getAllUnBookedOffers() throws Exception {
         given(offerService.getAllUnbookedOffers()).willReturn(offerDtoList);
-
         mockMvc.perform(get("/api/v1/offers/unbooked"))
                 .andExpect(jsonPath("$",hasSize(1)))
                 .andExpect(jsonPath("$[0].id",is(1)))
@@ -140,7 +123,6 @@ class OfferControllerTest {
     @Test
     @Disabled
     void getAllOffersForClient() throws Exception{
-
         given(offerService.getAllBookedOffersForClient(any())).willReturn(offerDtoList);
 
         mockMvc.perform(get("/api/v1/offers/booked-for-client"))
@@ -150,9 +132,7 @@ class OfferControllerTest {
 
     @Test
     void getAllOffersQualifiedByConditions() throws Exception {
-
         given(offerService.getAllOffersQualifiedByConditions(any())).willReturn(offerDtoList);
-
         mockMvc.perform(get("/api/v1/offers/booked-for-conditions").accept(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
 
@@ -162,9 +142,7 @@ class OfferControllerTest {
     @Test
     @DisplayName("Testing getting single offer")
     void getOfferById() throws Exception{
-
         given(offerService.getOfferById(anyLong())).willReturn(offerDto);
-
         mockMvc.perform(get("/api/v1/offers/"+offerDto.getId().toString()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
@@ -191,11 +169,8 @@ class OfferControllerTest {
     @Test
     @DisplayName("Testing delete offer")
     void deleteOffer() throws Exception {
-
         mockMvc.perform(delete("/api/v1/offers/"+offer.getId()))
                 .andExpect(status().isOk());
-
         then(offerService).should().deleteOffer(offer.getId());
-
     }
 }

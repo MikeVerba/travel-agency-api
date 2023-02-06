@@ -1,6 +1,5 @@
 package com.example.travelagencyapi.controllers;
 
-import com.example.travelagencyapi.api.models.ClientDto;
 import com.example.travelagencyapi.api.models.OfferDto;
 import com.example.travelagencyapi.domain.Client;
 import com.example.travelagencyapi.domain.Continent;
@@ -34,8 +33,6 @@ class BookingControllerTest {
     Offer offer;
     OfferDto offerDto;
     Client client;
-    List<Client> clientList;
-    ClientDto clientDto;
 
     @BeforeEach
     void setUp() {
@@ -81,6 +78,7 @@ class BookingControllerTest {
 
     @Test
     void bookOfferForClientId() throws Exception {
+        System.out.println("CHUJ!!!!!");
         given(bookingService.bookOfferForClientId(anyLong(), anyLong())).willReturn(offerDto);
 
         mockMvc.perform(post("/api/v1/booking/1/1/")

@@ -51,7 +51,6 @@ class ClientControllerTest {
 
         clientDtoList = new ArrayList<>();
         clientDtoList.add(clientDto);
-
         mockMvc = MockMvcBuilders.standaloneSetup(clientController).build();
     }
 
