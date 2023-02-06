@@ -1,4 +1,4 @@
-FROM openjdk:11
+FROM openjdk:8
 
 # Refer to Maven build -> finalName
 ARG JAR_FILE=target/travel-agency-api.jar
