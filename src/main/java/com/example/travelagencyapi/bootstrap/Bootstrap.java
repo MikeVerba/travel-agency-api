@@ -12,8 +12,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class Bootstrap implements CommandLineRunner {
 
-    private ClientRepository clientRepository;
-    private OfferRepository offerRepository;
+    private final ClientRepository clientRepository;
+    private final OfferRepository offerRepository;
 
     @Autowired
     public Bootstrap(ClientRepository clientRepository, OfferRepository offerRepository) {

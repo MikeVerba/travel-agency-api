@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping(BookingController.BASE_URL)
 public class BookingController {
-
+    public static final String BASE_URL = "api/v1/booking";
     private final BookingServiceImpl bookingService;
 
     @Autowired
@@ -19,11 +19,8 @@ public class BookingController {
         this.bookingService = bookingService;
     }
 
-    public static final String BASE_URL = "api/v1/booking";
-
-
-    @RequestMapping(value = "/{client_id}/{offer_id}",method = RequestMethod.POST)
-    public ResponseEntity<Void> bookOfferForClientId(@PathVariable("client_id") Long clientId, @PathVariable("offer_id") Long offerId){
+    @RequestMapping(value = "/{client_id}/{offer_id}", method = RequestMethod.POST)
+    public ResponseEntity<Void> bookOfferForClientId(@PathVariable("client_id") Long clientId, @PathVariable("offer_id") Long offerId) {
         bookingService.bookOfferForClientId(clientId, offerId);
         return new ResponseEntity<Void>(HttpStatus.OK);
 

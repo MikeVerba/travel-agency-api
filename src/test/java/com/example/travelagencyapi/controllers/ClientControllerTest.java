@@ -111,14 +111,6 @@ class ClientControllerTest {
     }
 
     @Test
-    void saveClientById() {
-    }
-
-    @Test
-    void patchClient() {
-    }
-
-    @Test
     @DisplayName("Testing delete client")
     void deleteClient() throws Exception {
 

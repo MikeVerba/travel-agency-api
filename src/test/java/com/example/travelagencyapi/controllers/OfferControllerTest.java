@@ -156,18 +156,6 @@ class OfferControllerTest {
     }
 
     @Test
-    void createNewOffer() {
-    }
-
-    @Test
-    void saveOfferById() {
-    }
-
-    @Test
-    void patchOffer() {
-    }
-
-    @Test
     @DisplayName("Testing delete offer")
     void deleteOffer() throws Exception {
         mockMvc.perform(delete("/api/v1/offers/"+offer.getId()))
