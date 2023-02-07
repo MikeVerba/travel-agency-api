@@ -15,16 +15,15 @@ public class MyBasicAuthenticationEntryPoint extends BasicAuthenticationEntryPoi
 
     @Override
     public void commence(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
-
-        httpServletResponse.addHeader("WWW-Authenticate","Basic realm=" + getRealmName() + "");
+        httpServletResponse.addHeader("WWW-Authenticate", "Basic realm=" + getRealmName() + "");
         httpServletResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        PrintWriter writer = httpServletResponse.getWriter();
-        writer.println("HTTP Status 401 - " + e.getMessage());
-        writer.close();
+        try (PrintWriter writer = httpServletResponse.getWriter()) {
+            writer.println("HTTP Status 401 - " + e.getMessage());
+        }
     }
 
     @Override
-    public void afterPropertiesSet() throws Exception{
+    public void afterPropertiesSet() throws Exception {
         setRealmName("MikeVerba");
         super.afterPropertiesSet();
     }
